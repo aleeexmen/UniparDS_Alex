@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Currículos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .dynamic-section {
+            margin-bottom: 20px;
+        }
+        .add-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .add-btn:hover {
+            background-color: #218838;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gerador de Currículos</h1>
+        <form id="curriculoForm" onsubmit="generateResume(event)">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="data_nascimento">Data de Nascimento:</label>
+            <input type="date" id="data_nascimento" name="data_nascimento" required>
+
+            <label for="telefone">Telefone:</label>
+            <input type="tel" id="telefone" name="telefone" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <h3>Experiências Profissionais</h3>
+            <div id="experiencias">
+                <div class="dynamic-section" data-index="0">
+                    <label for="cargo_0">Cargo:</label>
+                    <input type="text" id="cargo_0" name="experiencia[0][cargo]" required>
+                    
+                    <label for="empresa_0">Empresa:</label>
+                    <input type="text" id="empresa_0" name="experiencia[0][empresa]" required>
+                    
+                    <label for="periodo_0">Período:</label>
+                    <input type="text" id="periodo_0" name="experiencia[0][periodo]" required>
+                </div>
+            </div>
+            <button type="button" class="add-btn" onclick="addExperience()">+ Adicionar Experiência</button>
+
+            <h3>Formação Acadêmica</h3>
+            <div id="formacoes">
+                <div class="dynamic-section" data-index="0">
+                    <label for="instituicao_0">Instituição de Ensino:</label>
+                    <input type="text" id="instituicao_0" name="formacao[0][instituicao]" required>
+                    
+                    <label for="curso_0">Curso:</label>
+                    <input type="text" id="curso_0" name="formacao[0][curso]" required>
+                    
+                    <label for="situacao_0">Situação:</label>
+                    <input type="text" id="situacao_0" name="formacao[0][situacao]" required>
+                    
+                    <label for="conclusao_0">Data de Conclusão:</label>
+                    <input type="date" id="conclusao_0" name="formacao[0][conclusao]" required>
+                </div>
+            </div>
+            <button type="button" class="add-btn" onclick="addEducation()">+ Adicionar Formação</button>
+
+            <button type="submit" class="submit-btn">Gerar Currículo</button>
+        </form>
+    </div>
+
+    <script>
+        let experienciaIndex = 1;
+        let formacaoIndex = 1;
+
+        function addExperience() {
+            const experienciasDiv = document.getElementById('experiencias');
+            const newDiv = document.createElement('div');
+            newDiv.classList.add('dynamic-section');
+            newDiv.setAttribute('data-index', experienciaIndex);
+
+            newDiv.innerHTML = `
+                <label for="cargo_${experienciaIndex}">Cargo:</label>
+                <input type="text" id="cargo_${experienciaIndex}" name="experiencia[${experienciaIndex}][cargo]" required>
+                
+                <label for="empresa_${experienciaIndex}">Empresa:</label>
+                <input type="text" id="empresa_${experienciaIndex}" name="experiencia[${experienciaIndex}][empresa]" required>
+                
+                <label for="periodo_${experienciaIndex}">Período:</label>
+                <input type="text" id="periodo_${experienciaIndex}" name="experiencia[${experienciaIndex}][periodo]" required>
+            `;
+            experienciasDiv.appendChild(newDiv);
+            experienciaIndex++;
+        }
+
+        function addEducation() {
+            const formacoesDiv = document.getElementById('formacoes');
+            const newDiv = document.createElement('div');
+            newDiv.classList.add('dynamic-section');
+            newDiv.setAttribute('data-index', formacaoIndex);
+
+            newDiv.innerHTML = `
+                <label for="instituicao_${formacaoIndex}">Instituição de Ensino:</label>
+                <input type="text" id="instituicao_${formacaoIndex}" name="formacao[${formacaoIndex}][instituicao]" required>
+                
+                <label for="curso_${formacaoIndex}">Curso:</label>
+                <input type="text" id="curso_${formacaoIndex}" name="formacao[${formacaoIndex}][curso]" required>
+                
+                <label for="situacao_${formacaoIndex}">Situação:</label>
+                <input type="text" id="situacao_${formacaoIndex}" name="formacao[${formacaoIndex}][situacao]" required>
+                
+                <label for="conclusao_${formacaoIndex}">Data de Conclusão:</label>
+                <input type="date" id="conclusao_${formacaoIndex}" name="formacao[${formacaoIndex}][conclusao]" required>
+            `;
+            formacoesDiv.appendChild(newDiv);
+            formacaoIndex++;
+        }
+
+        function generateResume(event) {
+            event.preventDefault(); // Impede o envio do formulário de maneira tradicional
+
+            const form = document.getElementById('curriculoForm');
+            const formData = new FormData(form);
+
+            // Envia os dados via AJAX para o PHP
+            fetch('generate.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(html => {
+                // Abre uma nova janela e exibe o currículo
+                const newWindow = window.open();
+                newWindow.document.write(html);
+                newWindow.document.close();
+            })
+            .catch(error => console.error('Erro ao gerar o currículo:', error));
+        }
+    </script>
+</body>
+</html>
